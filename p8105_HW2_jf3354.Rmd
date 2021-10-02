@@ -12,3 +12,9 @@ library(tidyverse)
 library(readxl)
 library(haven)
 ```
+
+```{r}
+TW_df =
+    read_excel("./p8105_HW2_jf3354/MrTrash, sheet = 'MrTrashWheel') %>%
+        janitor::clean_names() %>%
+```
