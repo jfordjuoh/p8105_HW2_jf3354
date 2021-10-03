@@ -11,10 +11,47 @@ output: github_document
 library(tidyverse)
 library(readxl)
 library(haven)
+library(dplyr)
+```
+
+##This was the pathname i wanted to use import the Mr.Trash file and it didnt work. Kept saying Error: 'path' does not exist. Why? 1. TW_df = read_excel("./Data Science/p8105_HW2_jf3354/MrTrash.xlsx", sheet = 'MrTrashWheel') 2. TW_df = read_excel("./p8105_HW2_jf3354/MrTrash.xlsx", sheet = 'MrTrashWheel') 
+
+#what exactly is dumpster-specific data? I removed all the total rows
+
+##Problem 1
+```{r}
+TW_df = read_excel("MrTrash.xlsx", sheet = 'MrTrashWheel', range = 'A2:N408') %>%
+    janitor::clean_names() %>%
+    mutate(TW_df, sports_balls = round(sports_balls)) 
+    drop_na(TW_df, dumpster) #dropping all the rows in dumpster that has a NA
+    
+summary(TW_df)
+skimr::skim(TW_df)
+str(TW_df)
 ```
 
 ```{r}
-TW_df =
-    read_excel("./p8105_HW2_jf3354/MrTrash, sheet = 'MrTrashWheel') %>%
-        janitor::clean_names() %>%
+prep_2019 = read_excel("MrTrash.xlsx", sheet = '2019 Precipitation',range = 'A2:B14') %>%
+  drop_na() %>%
+  mutate(year = "2019")
+   
+prep_2018 = read_excel("MrTrash.xlsx", sheet = '2018 Precipitation', range = 'A2:B14') %>%  
+    mutate(year = "2018")
+    
+##I also got rid of the last row which was the total precipitations
+
+precip18_19 = 
+  bind_rows(prep_2019, prep_2018)  
+  m <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12) 
+  mutate(Month = recode(pull(precip18_19, Month), month.name(m)))
+ 
+     select(year, everything())
+       
+precipitation18_19 = 
+    left_join(prep_2019, prep_2018, by = "Month" )
 ```
+
+### Question: Write a paragraph about these data; you are encouraged to use inline R. Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2018? What was the median number of sports balls in a dumpster in 2019? ANSWER THIS
+
+##Problem 2
+
