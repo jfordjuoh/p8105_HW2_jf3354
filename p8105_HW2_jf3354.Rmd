@@ -18,11 +18,13 @@ library(dplyr)
 
 #what exactly is dumpster-specific data? I removed all the total rows
 
+#Line 23 there is a problem with my mutate statement. Works when i run it individually but is preventing my document from knitting. 
+
 ##Problem 1
 ```{r}
 TW_df = read_excel("MrTrash.xlsx", sheet = 'MrTrashWheel', range = 'A2:N408') %>%
     janitor::clean_names() %>%
-    mutate(TW_df, sports_balls = round(sports_balls)) 
+    mutate(TW_df, sports_balls = round(sports_balls)) %>%
     drop_na(TW_df, dumpster) #dropping all the rows in dumpster that has a NA
     
 summary(TW_df)
@@ -41,17 +43,14 @@ prep_2018 = read_excel("MrTrash.xlsx", sheet = '2018 Precipitation', range = 'A2
 ##I also got rid of the last row which was the total precipitations
 
 precip18_19 = 
-  bind_rows(prep_2019, prep_2018)  
-  m <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12) 
-  mutate(Month = recode(pull(precip18_19, Month), month.name(m)))
- 
-     select(year, everything())
-       
-precipitation18_19 = 
-    left_join(prep_2019, prep_2018, by = "Month" )
+  bind_rows(prep_2019, prep_2018) %>%
+  mutate(Month = month.name[Month]) %>%
+  arrange(precip18_19, Month, Total, year)
 ```
+
 
 ### Question: Write a paragraph about these data; you are encouraged to use inline R. Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2018? What was the median number of sports balls in a dumpster in 2019? ANSWER THIS
 
 ##Problem 2
 
+```{r}
