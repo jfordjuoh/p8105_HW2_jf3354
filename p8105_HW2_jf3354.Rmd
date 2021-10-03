@@ -51,6 +51,20 @@ precip18_19 =
 
 ### Question: Write a paragraph about these data; you are encouraged to use inline R. Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2018? What was the median number of sports balls in a dumpster in 2019? ANSWER THIS
 
+#p_m =  read_csv("./fivethirtyeight_dataset/pols_month.csv"). President: 1=Democrat 0=Repubs
+
 ##Problem 2
+```{r}
+p_m = read_csv("pols-month.csv") %>%
+  separate(mon, c("Year", "Month", "Day")) %>%
+  mutate(Month = month.name[as.numeric(Month)]) %>%
+  mutate(president = ifelse(is.na(prez_dem), prez_gop, prez_dem )) %>%
+  select(p_m, -prez_dem, -prez_gop)
+
+
+```
 
 ```{r}
+
+
+```
