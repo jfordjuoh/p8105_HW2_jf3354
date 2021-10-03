@@ -51,7 +51,10 @@ precip18_19 =
 
 ### Question: Write a paragraph about these data; you are encouraged to use inline R. Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2018? What was the median number of sports balls in a dumpster in 2019? ANSWER THIS
 
-#p_m =  read_csv("./fivethirtyeight_dataset/pols_month.csv"). President: 1=Democrat 0=Repubs
+#p_m =  read_csv("./fivethirtyeight_dataset/pols_month.csv").
+#Do we have to change the year fomrat from two digits to 4 in s_np? YES
+#mutate(Date = as.Date(date, format = "%M/%D/%Y"))
+#President: 1=Democrat 0=Repubs
 
 ##Problem 2
 ```{r}
@@ -59,12 +62,74 @@ p_m = read_csv("pols-month.csv") %>%
   separate(mon, c("Year", "Month", "Day")) %>%
   mutate(Month = month.name[as.numeric(Month)]) %>%
   mutate(president = ifelse(is.na(prez_dem), prez_gop, prez_dem )) %>%
-  select(p_m, -prez_dem, -prez_gop)
+  select(-prez_dem, -prez_gop, -Day) %>%
 
+s_np = read_csv("snp.csv") %>%
+  separate(date, c("Day", "Month", "year")) %>%
+  Year = ifelse(year %in% c"year>=50") , year+1900
+  
+  
+  mutate(Month = month.name[as.numeric(Month)]) %>%
+  relocate(Year, Month) %>%
+  arrange(Year)
+  
+  arrange(s_np, Year, Month) %>% ##arrange is not in order rn
+
+  
+un_emp = read_csv("unemployment.csv") 
+un_emp_tidy =
+  un_emp %>%
+  pivot_longer(
+    Jan:Dec, 
+    names_to = 'Month',
+    values_to = 'Percentage'
+  )
+
+## Join the datasets by merging snp into pols, and merging unemployment into the result. So we will join them by year while doing a left-join
 
 ```
 
+##Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
+
+
+
+
+
 ```{r}
 
+#my code
+s_np = read_csv("snp.csv") %>%
+  separate(date, c("Day", "Month", "Year")) %>%
+  mutate(Month = month.name[as.numeric(Month)]) %>%
+  relocate(Year, Month) %>%
+  arrange(Year)
+#end of my code
 
+
+s_np = read_csv("snp.csv") %>%
+  separate(date, c("Day", "Month", "Year")) %>%
+  arrange(s_np, Year, Month) 
+  relocate(s_np, Year, Month)
+
+  
+s_np = read_csv("snp.csv") %>%
+  separate(date, c("Day", "Month", "Year")) %>%
+  mutate(Month = month.name[as.numeric(Month)]) %>%
+  arrange(s_np, Month) %>%
+  arrange(s_np, Year)
+  
+  
+  arrange(s_np, Year, Month) %>% ##arrange is not in order rn
+  relocate(Year, Month) 
+  
+  s_np = read_csv("snp.csv") %>%
+  separate(date, c("Day", "Month", "Year")) %>%
+  if(Year >= 50){
+    Year = Year + 1900
+  } else {
+    Year = Year + 2000
+  }
+  
+  
+  
 ```
