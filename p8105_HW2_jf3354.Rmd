@@ -24,8 +24,8 @@ library(dplyr)
 ```{r}
 TW_df = read_excel("MrTrash.xlsx", sheet = 'MrTrashWheel', range = 'A2:N408') %>%
     janitor::clean_names() %>%
-    mutate(TW_df, sports_balls = round(sports_balls)) %>%
-    drop_na(TW_df, dumpster) #dropping all the rows in dumpster that has a NA
+    mutate(sports_balls = round(sports_balls)) %>%
+    drop_na(dumpster) #dropping all the rows in dumpster that has a NA
     
 summary(TW_df)
 skimr::skim(TW_df)
@@ -45,9 +45,10 @@ prep_2018 = read_excel("MrTrash.xlsx", sheet = '2018 Precipitation', range = 'A2
 precip18_19 = 
   bind_rows(prep_2019, prep_2018) %>%
   mutate(Month = month.name[Month]) %>%
-  arrange(precip18_19, Month, Total, year)
+  arrange(Month, Total, year)
 ```
 
+precip18_19, 
 
 ### Question: Write a paragraph about these data; you are encouraged to use inline R. Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2018? What was the median number of sports balls in a dumpster in 2019? ANSWER THIS
 
@@ -62,19 +63,17 @@ p_m = read_csv("pols-month.csv") %>%
   separate(mon, c("Year", "Month", "Day")) %>%
   mutate(Month = month.name[as.numeric(Month)]) %>%
   mutate(president = ifelse(is.na(prez_dem), prez_gop, prez_dem )) %>%
-  select(-prez_dem, -prez_gop, -Day) %>%
+  select(-prez_dem, -prez_gop, -Day)
 
 s_np = read_csv("snp.csv") %>%
   separate(date, c("Day", "Month", "year")) %>%
-  Year = ifelse(year %in% c"year>=50") , year+1900
-  
-  
+  mutate(year = as.numeric(year)) %>%
+  mutate(year = if_else(year >= 50,
+                        year + 1900,
+                        year + 2000)) %>%
   mutate(Month = month.name[as.numeric(Month)]) %>%
-  relocate(Year, Month) %>%
-  arrange(Year)
-  
-  arrange(s_np, Year, Month) %>% ##arrange is not in order rn
-
+  select(year, Month, everything()) %>%
+  arrange(year, Month)
   
 un_emp = read_csv("unemployment.csv") 
 un_emp_tidy =
@@ -92,44 +91,48 @@ un_emp_tidy =
 ##Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
 
 
-
-
-
 ```{r}
 
-#my code
 s_np = read_csv("snp.csv") %>%
-  separate(date, c("Day", "Month", "Year")) %>%
+  separate(date, c("Day", "Month", "year")) %>%
+  mutate(year = as.numeric(year)) %>%
+  mutate(year = if_else(year >= 50,
+                        year + 1900,
+                        year + 2000)) %>%
   mutate(Month = month.name[as.numeric(Month)]) %>%
-  relocate(Year, Month) %>%
-  arrange(Year)
-#end of my code
+  select(s_np, year, Month, everything()) %>%
+  arrange(s_np, year, Month)
 
 
+  mutate(year = as.numeric(pull(s_np, year))) %>%
+
+#the code I had that worked#
 s_np = read_csv("snp.csv") %>%
-  separate(date, c("Day", "Month", "Year")) %>%
-  arrange(s_np, Year, Month) 
-  relocate(s_np, Year, Month)
-
-  
-s_np = read_csv("snp.csv") %>%
-  separate(date, c("Day", "Month", "Year")) %>%
+  separate(date, c("Day", "Month", "year")) 
+  mutate(year = as.numeric(pull(s_np, year))) %>%
+  mutate(year = if_else(year >= 50,
+                        year + 1900,
+                        year + 2000)) %>%
+  mutate(year = as.character(pull(s_np, year))) %>%
   mutate(Month = month.name[as.numeric(Month)]) %>%
-  arrange(s_np, Month) %>%
-  arrange(s_np, Year)
-  
-  
-  arrange(s_np, Year, Month) %>% ##arrange is not in order rn
-  relocate(Year, Month) 
-  
-  s_np = read_csv("snp.csv") %>%
-  separate(date, c("Day", "Month", "Year")) %>%
-  if(Year >= 50){
-    Year = Year + 1900
-  } else {
-    Year = Year + 2000
-  }
-  
-  
-  
+  select(year, Month, everything()) %>%
+  arrange(s_np, year, Month)
+#end of code that I had that worked#
+
+s_np = read_csv("snp.csv") %>%
+  separate(date, c("Day", "Month", "year")) 
+  mutate(year = as.numeric(pull(s_np, year))) %>%
+  mutate(year = if_else(year >= 50,
+                        year + 1900,
+                        year + 2000)) %>%
+  mutate(year = as.character(pull(s_np, year))) %>%
+  mutate(Month = month.name[as.numeric(Month)]) %>%
+  select(year, Month, everything()) %>%
+  arrange(s_np, year, Month)
+```
+
+##Problem 3
+```{r}
+Pbn = read_csv("Popular_Baby_Names.csv")
+
 ```
