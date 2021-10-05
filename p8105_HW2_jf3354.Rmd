@@ -71,10 +71,13 @@ s_np = read_csv("snp.csv") %>%
   mutate(year = if_else(year >= 50,
                         year + 1900,
                         year + 2000)) %>%
-  mutate(Month = month.name[as.numeric(Month)]) %>%
-  select(year, Month, everything()) %>%
-  arrange(year, Month)
-  
+  arrange(year,Month) %>% 
+  mutate(Month = (month.name[as.numeric(Month)])) %>%
+  select(year, Month, everything()) 
+
+```
+
+```{r}
 un_emp = read_csv("unemployment.csv") 
 un_emp_tidy =
   un_emp %>%
@@ -84,55 +87,14 @@ un_emp_tidy =
     values_to = 'Percentage'
   )
 
-## Join the datasets by merging snp into pols, and merging unemployment into the result. So we will join them by year while doing a left-join
+## Join the datasets by merging snp into pols, and merging unemployment into the result. So we will join them by year while doing a left-join. We will do an inner join. 
 
 ```
 
 ##Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
 
-
-```{r}
-
-s_np = read_csv("snp.csv") %>%
-  separate(date, c("Day", "Month", "year")) %>%
-  mutate(year = as.numeric(year)) %>%
-  mutate(year = if_else(year >= 50,
-                        year + 1900,
-                        year + 2000)) %>%
-  mutate(Month = month.name[as.numeric(Month)]) %>%
-  select(s_np, year, Month, everything()) %>%
-  arrange(s_np, year, Month)
-
-
-  mutate(year = as.numeric(pull(s_np, year))) %>%
-
-#the code I had that worked#
-s_np = read_csv("snp.csv") %>%
-  separate(date, c("Day", "Month", "year")) 
-  mutate(year = as.numeric(pull(s_np, year))) %>%
-  mutate(year = if_else(year >= 50,
-                        year + 1900,
-                        year + 2000)) %>%
-  mutate(year = as.character(pull(s_np, year))) %>%
-  mutate(Month = month.name[as.numeric(Month)]) %>%
-  select(year, Month, everything()) %>%
-  arrange(s_np, year, Month)
-#end of code that I had that worked#
-
-s_np = read_csv("snp.csv") %>%
-  separate(date, c("Day", "Month", "year")) 
-  mutate(year = as.numeric(pull(s_np, year))) %>%
-  mutate(year = if_else(year >= 50,
-                        year + 1900,
-                        year + 2000)) %>%
-  mutate(year = as.character(pull(s_np, year))) %>%
-  mutate(Month = month.name[as.numeric(Month)]) %>%
-  select(year, Month, everything()) %>%
-  arrange(s_np, year, Month)
-```
-
 ##Problem 3
 ```{r}
 Pbn = read_csv("Popular_Baby_Names.csv")
-
 ```
+
