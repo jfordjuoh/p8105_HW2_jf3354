@@ -60,7 +60,8 @@ precip18_19,
 ##Problem 2
 ```{r}
 p_m = read_csv("pols-month.csv") %>%
-  separate(mon, c("Year", "Month", "Day")) %>%
+  separate(mon, c("year", "Month", "Day")) %>%
+  mutate(year = as.numeric(year)) %>%
   mutate(Month = month.name[as.numeric(Month)]) %>%
   mutate(president = ifelse(is.na(prez_dem), prez_gop, prez_dem )) %>%
   select(-prez_dem, -prez_gop, -Day)
@@ -74,6 +75,9 @@ s_np = read_csv("snp.csv") %>%
   arrange(year,Month) %>% 
   mutate(Month = (month.name[as.numeric(Month)])) %>%
   select(year, Month, everything()) 
+
+pmsnp_df1 = 
+  full_join(p_m, s_np, by = c("year", "Month"))
 
 ```
 
