@@ -108,6 +108,7 @@ finalQ2_df =
 ##Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
 
 ##Problem 3
+#ASKKKK: what they want: this should have rows for ethnicities and columns for year. How would I get the ethnicity as a row? Inintally I thought pivot widr but the dataset is already wide?
 ```{r}
 pbn = read_csv("Popular_Baby_Names.csv") %>%
   distinct() %>% 
@@ -116,12 +117,44 @@ pbn = read_csv("Popular_Baby_Names.csv") %>%
   mutate(
     ethnicity = recode(ethnicity, 
          "ASIAN AND PACI" = "ASIAN AND PACIFIC ISLANDER"
-        )) 
+        )) %>%
 
-filter(pbn, childs_first_name == "OLIVIA")   
+#table for the girls    
+filter(childs_first_name == "OLIVIA") %>%  
+select(-gender) %>%
+select(year_of_birth, rank, count, everything()) %>%
+arrange(year_of_birth, rank) %>%
+  knitr::kable("pipe") 
+
+
 #first figure out how to get oliva by itself (use filter?),
-#we have to arrange it by rank(or count) and year (year should be a column)
+#we have to arrange it by rank and year (year should be a column)
 #ethnicity should be a row
 #we might have to pivot wider so that the ethnicity is a row
+
+#knir\cable is what we have to use  
+```
+
+```{r}
+#table for the males
+#filter(pbn, gender == "MALE", rank == "1", year_of_birth == "2010")
+#After filtering the dataset by gender (Male), rank (1), and by year (ran indvidually from year 2011-2016), the name Jayden was ranked first at least by one ethnicity from the years 2011-2015 which makes it the most popular name in this dataset.
+
+filter(pbn, childs_first_name == "JAYDEN") %>%  
+select(-gender) %>%
+select(year_of_birth, rank, count, everything()) %>%
+arrange(year_of_birth, rank) %>%
+  knitr::kable("pipe") 
+
+```
+
+#Is the number of children with a name same as the count?
+```{r}
+babynamef = filter(babynamef, gender == "MALE", ethnicity == "WHITE NON HISPANIC", year_of_birth == "2016") %>%
+p <- ggplot(babynamef , aes(x = rank, y = count)) + geom_point(alpha = 0.5)  %>%
+
+print(p) %>%
+
+ggsave("JF_DSHW2_scatterplot.pdf", height = 10, width = 6)
 ```
 
