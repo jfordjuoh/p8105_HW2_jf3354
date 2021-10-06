@@ -55,7 +55,7 @@ precip18_19,
 
 #President: 1=Democrat 0=Repubs
 
-##Problem 2
+##Problem 2  COME BACK AND DO A LEFT MERGE
 ```{r}
 p_m = read_csv("pols-month.csv") %>%
   separate(mon, c("year", "Month", "Day")) %>%
@@ -77,9 +77,6 @@ s_np = read_csv("snp.csv") %>%
 pmsnp_df1 = 
   full_join(p_m, s_np, by = c("year", "Month"))
 
-```
-
-```{r}
 un_emp = read_csv("unemployment.csv") 
 un_emp_tidy = un_emp %>%
   pivot_longer(
@@ -106,8 +103,6 @@ un_emp_tidy = un_emp %>%
 finalQ2_df = 
   full_join(pmsnp_df1, un_emp_tidy, by = c("year", "Month"))
 
-## Join the datasets by merging snp into pols, and merging unemployment into the result. So we will join them by year while doing a left-join. You did a full join so go back and do a left join
-
 ```
 
 ##Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
@@ -121,7 +116,12 @@ pbn = read_csv("Popular_Baby_Names.csv") %>%
   mutate(
     ethnicity = recode(ethnicity, 
          "ASIAN AND PACI" = "ASIAN AND PACIFIC ISLANDER"
-        ))
+        )) 
 
+filter(pbn, childs_first_name == "OLIVIA")   
+#first figure out how to get oliva by itself (use filter?),
+#we have to arrange it by rank(or count) and year (year should be a column)
+#ethnicity should be a row
+#we might have to pivot wider so that the ethnicity is a row
 ```
 
