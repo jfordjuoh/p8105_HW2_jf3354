@@ -28,7 +28,6 @@ TW_df = read_excel("MrTrash.xlsx", sheet = 'MrTrashWheel', range = 'A2:N408') %>
     
 summary(TW_df)
 skimr::skim(TW_df)
-str(TW_df)
 ```
 
 ```{r}
@@ -43,19 +42,20 @@ prep_2018 = read_excel("MrTrash.xlsx", sheet = '2018 Precipitation', range = 'A2
 
 precip18_19 = 
   bind_rows(prep_2019, prep_2018) %>%
-  mutate(Month = month.name[Month]) %>%
-  arrange(Month, Total, year)
-```
+  arrange(year,Month, Total) %>% 
+  mutate(Month = month.name[Month]) 
 
-precip18_19, 
+summary(precip18_19)
+skimr::skim(precip18_19)
+```
 
 ### Question: Write a paragraph about these data; you are encouraged to use inline R. Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2018? What was the median number of sports balls in a dumpster in 2019? ANSWER THIS
 
-#p_m =  read_csv("./fivethirtyeight_dataset/pols_month.csv").
 
-#President: 1=Democrat 0=Repubs
+
 
 ##Problem 2  COME BACK AND DO A LEFT MERGE
+#President: 1=Democrat 0=Repubs
 ```{r}
 p_m = read_csv("pols-month.csv") %>%
   separate(mon, c("year", "Month", "Day")) %>%
@@ -110,7 +110,7 @@ finalQ2_df =
 ##Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
 
 ##Problem 3
-#ASKKKK: what they want: this should have rows for ethnicities and columns for year. How would I get the ethnicity as a row? Inintally I thought pivot widr but the dataset is already wide?
+
 ```{r}
 pbn = read_csv("Popular_Baby_Names.csv") %>%
   distinct() %>% 
@@ -134,9 +134,10 @@ relocate(ethnicity, "2011","2012","2013","2014","2015")
 ```
 
 ```{r}
-#table for the males
+#table for the MALES
 #filter(pbn, gender == "MALE", rank == "1", year_of_birth == "2010")
-#After filtering the dataset by gender (Male), rank (1), and by year (ran indvidually from year 2011-2016), the name Jayden was ranked first at least by one ethnicity from the years 2011-2015 which makes it the most popular name in this dataset.
+#After filtering the dataset by gender (Male), rank (1), and by year (ran individually from year 2011-2016), the name Jayden was ranked first at least by one ethnicity from the years 2011-2015 which makes it the most popular name in this dataset.
+
 jayden_pbn = pbn %>%
 filter(childs_first_name == "JAYDEN") %>%  
 select(-gender, -childs_first_name, -count) %>%
@@ -144,19 +145,16 @@ select(-gender, -childs_first_name, -count) %>%
     names_from = "year_of_birth",
     values_from = "rank") %>%
 relocate(ethnicity, "2011","2012","2013","2014","2015")
-
 ```
 
-#Is the number of children with a name same as the count?
-```{r}
-babynamef = filter(babynamef, gender == "MALE", ethnicity == "WHITE NON HISPANIC", year_of_birth == "2016") %>%
-p <- ggplot(babynamef , aes(x = rank, y = count)) + geom_point(alpha = 0.5)  %>%
 
-print(p) %>%
+```{r}
+babynamef = filter(pbn, gender == "MALE", ethnicity == "WHITE NON HISPANIC", year_of_birth == "2016") 
+p <- ggplot(babynamef , aes(x = rank, y = count)) +   geom_point(alpha = 0.5) + ggtitle("Popular Names in White Non-Hispanic Male Children, 2016") 
+
+print(p)
 
 ggsave("JF_DSHW2_scatterplot.pdf", height = 10, width = 6)
 
-move the selecets above pivot wider 
-use the id_cols after pivot wider for ethnictiy
 ```
 
