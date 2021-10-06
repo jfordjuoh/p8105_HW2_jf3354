@@ -75,7 +75,7 @@ s_np = read_csv("snp.csv") %>%
   select(year, Month, everything()) 
 
 pmsnp_df1 = 
-  full_join(p_m, s_np, by = c("year", "Month"))
+  left_join(p_m, s_np, by = c("year", "Month"))
 
 un_emp = read_csv("unemployment.csv") 
 un_emp_tidy = un_emp %>%
@@ -101,9 +101,7 @@ un_emp_tidy = un_emp %>%
   rename(year = Year)
 
 finalQ2_df = 
-  full_join(pmsnp_df1, un_emp_tidy, by = c("year", "Month"))
-
-#do a left join instead
+  left_join(pmsnp_df1, un_emp_tidy, by = c("year", "Month"))
 
 ```
 
