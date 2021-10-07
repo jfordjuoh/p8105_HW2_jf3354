@@ -62,7 +62,7 @@ The total precipitation in 2018 was 70.33. The median number of sports balls in 
 
 
 ##PROBLEM 2  
-#President: 1=Democrat 0=Repubs
+
 ```{r}
 p_m = read_csv("pols-month.csv") %>%
   separate(mon, c("year", "Month", "Day")) %>%
@@ -111,8 +111,15 @@ finalQ2_df =
   left_join(pmsnp_df1, un_emp_tidy, by = c("year", "Month"))
 
 ```
-##Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
+##QUESTION: Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
 
+ANSWER: Using the pols-month data, I created a dataframe called p_m, which has 822 observations and 9 variables which includes the years (ranging from 1947-2015), months, and president, which shows if the president was a democrat or republican(1=Democrat 0=Repubs).  
+
+Using the snp data, I created a dataframe called s_np, which has 787 observations and 4 variables which includes the year(ranging from 1950-2015), month, day and close. 
+
+I then did a left join with s_np and p_m to create pmsnp_df1, which has 1391 observations and 11 variables which includes year (ranging from 1947-2015). 
+
+Using the unemployment data, I created the un_emp_tidy dataframe which has 816 observations and 3 variables, which includes the year, month, and percentage. I then did another left join with pmsnp_df1 to create the finalQ2_df which has 1391 observations and 12 varibles which includes year, month, president, close, and percentage. 
 
 
 
