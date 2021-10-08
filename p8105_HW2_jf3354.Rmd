@@ -14,7 +14,7 @@ library(dplyr)
 
 ##PROBLEM 1
 ```{r}
-TW_df = read_excel("MrTrash.xlsx", sheet = 'MrTrashWheel', range = 'A2:N408') %>%
+TW_df = read_excel("MrTrashnew.xlsx", sheet = 'MrTrashWheel', range = 'A2:N535') %>%
     janitor::clean_names() %>%
     mutate(sports_balls = round(sports_balls)) %>%
     drop_na(dumpster) #dropping all the rows in dumpster that has a NA
@@ -29,11 +29,11 @@ skimr::skim(TW_df)
 ```
 
 ```{r}
-prep_2019 = read_excel("MrTrash.xlsx", sheet = '2019 Precipitation',range = 'A2:B14') %>%
+prep_2019 = read_excel("MrTrashnew.xlsx", sheet = '2019 Precipitation',range = 'A2:B14') %>%
   drop_na() %>%
   mutate(year = "2019")
    
-prep_2018 = read_excel("MrTrash.xlsx", sheet = '2018 Precipitation', range = 'A2:B14') %>%  
+prep_2018 = read_excel("MrTrashnew.xlsx", sheet = '2018 Precipitation', range = 'A2:B14') %>%  
     mutate(year = "2018")
     
 ##I also got rid of the last row which was the total precipitations
@@ -51,12 +51,12 @@ skimr::skim(precip18_19)
 ### Question: Write a paragraph about these data; you are encouraged to use inline R. Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2018? What was the median number of sports balls in a dumpster in 2019? 
 
 Answer: 
-After cleaning the Trash Wheel dataset (TW_df), there was 344 observations and 14 variables. The mean weight in tons of the dumpsters was 3.263 tons and there eas a mean of 15.54 for the volume by cubic yards. The following are the means of items found in the dumpsters: 
-plasitc bottles = 1873.2, polystyrene = 2139, cig butts = 30754, glass bottles = 25.36, grocery bags = 1311, chip bags = 1780.3, sports balls = 11.81. 
+After cleaning the Trash Wheel dataset (TW_df), there was 454 observations and 14 variables. The mean weight in tons of the dumpsters was 6.386 tons and there was a mean of 30.76 for the volume by cubic yards. The following are the means of items found in the dumpsters: 
+plasitc bottles = 3790, polystyrene = 3833, cig butts = 48935, glass bottles = 44.81, grocery bags = 2201.5, chip bags = 3107.4, sports balls = 23.43. 
 
-After combining the precpitiation data from 2018 and 2019 into a new dataframe (precip18_19), I had 18 observations and 3 variables: month, total, and year. The median total precipation was 4.580 while the mean was 4.833.  
+After combining the precpitiation data from 2018 and 2019 into a new dataframe (precip18_19), I had 24 observations and 3 variables: month, total, and year. The median total precipation was 3.745 while the mean was 4.345.  
 
-The total precipitation in 2018 was 70.33. The median number of sports balls in a dumpster in 2019 was 8.5 sports balls. 
+The total precipitation in 2018 was 70.33. The median number of sports balls in a dumpster in 2019 was 9 sports balls. 
 
 
 
