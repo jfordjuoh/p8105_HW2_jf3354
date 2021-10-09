@@ -69,6 +69,11 @@ p_m = read_csv("pols-month.csv") %>%
   mutate(year = as.numeric(year)) %>%
   mutate(Month = month.name[as.numeric(Month)]) %>%
   mutate(president = ifelse(is.na(prez_dem), prez_gop, prez_dem )) %>%
+  mutate(president = as.character(president)) %>%
+  mutate(president = recode(president, 
+         "1" = "dem", 
+         "0" = "gop")
+    ) %>%
   select(-prez_dem, -prez_gop, -Day)
 
 s_np = read_csv("snp.csv") %>%
@@ -113,7 +118,7 @@ finalQ2_df =
 ```
 ##QUESTION: Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
 
-ANSWER: Using the pols-month data, I created a dataframe called p_m, which has 822 observations and 9 variables which includes the years (ranging from 1947-2015), months, and president, which shows if the president was a democrat or republican(1=Democrat 0=Repubs).  
+ANSWER: Using the pols-month data, I created a dataframe called p_m, which has 822 observations and 9 variables which includes the years (ranging from 1947-2015), months, and president, which shows if the president was a democrat or republican(dem=Democrat(1) gop=Repubs(0)).  
 
 Using the snp data, I created a dataframe called s_np, which has 787 observations and 4 variables which includes the year(ranging from 1950-2015), month, day and close. 
 
